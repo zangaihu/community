@@ -10,7 +10,8 @@ import top.sunhu.community.mapper.UserMapper;
 import top.sunhu.community.pojo.User;
 import top.sunhu.community.provider.GitHubProvider;
 
-import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.util.UUID;
 
@@ -31,7 +32,7 @@ public class AuthController {
     @GetMapping("/callback")
     public String callback(@RequestParam(name = "code") String code,
                            @RequestParam(name = "state") String state,
-                           HttpSession session, HttpServletRequest request) {
+                           HttpSession session, HttpServletResponse response) {
 
         System.out.println(code);
         AcessTokenDTO acessTokenDTO = new AcessTokenDTO();
@@ -47,19 +48,21 @@ public class AuthController {
         if (gitUser != null) {
             User user=new User();
             user.setAccountId(String.valueOf(gitUser.getId()));
-            user.setToken(UUID.randomUUID().toString());
+            String token = UUID.randomUUID().toString();
+            user.setToken(token);
             user.setName(gitUser.getName());
             user.setGmtCreate(System.currentTimeMillis());
             user.setGmtModified(user.getGmtCreate());
 
             userMapper.insert(user);
-            session.setAttribute("user", gitUser);
+            response.addCookie(new Cookie("token",token));
             return "redirect:/";
         } else {
             return "redirect:/";
         }
 
     }
+
 
 
 }
