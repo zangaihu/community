@@ -6,10 +6,13 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import top.sunhu.community.dto.AcessTokenDTO;
 import top.sunhu.community.dto.GitUser;
+import top.sunhu.community.mapper.UserMapper;
+import top.sunhu.community.pojo.User;
 import top.sunhu.community.provider.GitHubProvider;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import java.util.UUID;
 
 /**
  * @description: AuthController
@@ -21,6 +24,9 @@ public class AuthController {
 
     @Autowired
     private GitHubProvider gitHubProvider;
+
+    @Autowired
+    private UserMapper userMapper;
 
     @GetMapping("/callback")
     public String callback(@RequestParam(name = "code") String code,
@@ -35,11 +41,19 @@ public class AuthController {
         acessTokenDTO.setState(state);
         acessTokenDTO.setRedirect_uri("http://localhost:8887/callback");
         String accessToken = gitHubProvider.getAccessToken(acessTokenDTO);
-        GitUser user = gitHubProvider.getUser(accessToken);
-        System.out.println(user.getName());
+        GitUser gitUser = gitHubProvider.getUser(accessToken);
+        System.out.println(gitUser.getName());
 
-        if (user != null) {
-            session.setAttribute("user", user);
+        if (gitUser != null) {
+            User user=new User();
+            user.setAccountId(String.valueOf(gitUser.getId()));
+            user.setToken(UUID.randomUUID().toString());
+            user.setName(gitUser.getName());
+            user.setGmtCreate(System.currentTimeMillis());
+            user.setGmtModified(user.getGmtCreate());
+
+            userMapper.insert(user);
+            session.setAttribute("user", gitUser);
             return "redirect:/";
         } else {
             return "redirect:/";
