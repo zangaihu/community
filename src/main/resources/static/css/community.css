@@ -3,9 +3,20 @@ body{
 }
 .main{
     background-color: white;
-    margin: 30px;
+    margin-top: 60px;
+    width: 1170px;
 }
+
 .btn-publish{
     float: right;
     margin-bottom: 15px;
+}
+.media-object{
+    width: 45px;
+    height: 45px;
+}
+.text-desc{
+    font-size: 12px;
+    font-weight: normal;
+    color: #999;
 }

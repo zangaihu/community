@@ -2,12 +2,16 @@ package top.sunhu.community.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import top.sunhu.community.dto.QuestionDTO;
 import top.sunhu.community.mapper.UserMapper;
 import top.sunhu.community.pojo.User;
+import top.sunhu.community.service.QuestionService;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
+import java.util.List;
 
 
 @Controller
@@ -16,8 +20,11 @@ public class IndexController {
     @Autowired
     private UserMapper userMapper;
 
+    @Autowired
+    private QuestionService questionService;
+
     @GetMapping("/")
-    public String index(HttpServletRequest request) {
+    public String index(HttpServletRequest request, Model model) {
 
 
         Cookie[] cookies = request.getCookies();
@@ -35,6 +42,10 @@ public class IndexController {
                 }
             }
         }
+
+        List<QuestionDTO> questionDTOList=questionService.list();
+        model.addAttribute("questions",questionDTOList);
+
 
         return "index";
     }

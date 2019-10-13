@@ -53,7 +53,7 @@ public class AuthController {
             user.setName(gitUser.getName());
             user.setGmtCreate(System.currentTimeMillis());
             user.setGmtModified(user.getGmtCreate());
-            user.setAvatar_url(gitUser.getAvatar_url());
+            user.setAvatarUrl(gitUser.getAvatar_url());
 
             userMapper.insert(user);
             response.addCookie(new Cookie("token", token));
