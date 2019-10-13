@@ -45,24 +45,24 @@ public class AuthController {
         GitUser gitUser = gitHubProvider.getUser(accessToken);
         System.out.println(gitUser.getName());
 
-        if (gitUser != null) {
-            User user=new User();
+        if (gitUser != null && gitUser.getId() != null) {
+            User user = new User();
             user.setAccountId(String.valueOf(gitUser.getId()));
             String token = UUID.randomUUID().toString();
             user.setToken(token);
             user.setName(gitUser.getName());
             user.setGmtCreate(System.currentTimeMillis());
             user.setGmtModified(user.getGmtCreate());
+            user.setAvatar_url(gitUser.getAvatar_url());
 
             userMapper.insert(user);
-            response.addCookie(new Cookie("token",token));
+            response.addCookie(new Cookie("token", token));
             return "redirect:/";
         } else {
             return "redirect:/";
         }
 
     }
-
 
 
 }

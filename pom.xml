@@ -60,6 +60,12 @@
             <artifactId>lombok</artifactId>
             <version>1.18.4</version>
         </dependency>
+        <dependency>
+            <groupId>mysql</groupId>
+            <artifactId>mysql-connector-java</artifactId>
+            <version>8.0.15</version>
+        </dependency>
+
 
         <!-- https://mvnrepository.com/artifact/com.h2database/h2 -->
         <dependency>
@@ -88,14 +94,15 @@
                 <artifactId>flyway-maven-plugin</artifactId>
                 <version>6.0.6</version>
                 <configuration>
-                    <url>jdbc:h2:~/test</url>
-                    <user>sa</user>
+                    <url>jdbc:mysql://localhost:3306/community?useSSL=false&amp;serverTimezone=GMT</url>
+                    <user>root</user>
+                    <password>123456</password>
                 </configuration>
                 <dependencies>
                     <dependency>
-                        <groupId>com.h2database</groupId>
-                        <artifactId>h2</artifactId>
-                        <version>1.4.196</version>
+                        <groupId>mysql</groupId>
+                        <artifactId>mysql-connector-java</artifactId>
+                        <version>8.0.15</version>
                     </dependency>
                 </dependencies>
             </plugin>

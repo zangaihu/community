@@ -17,20 +17,22 @@ public class IndexController {
     private UserMapper userMapper;
 
     @GetMapping("/")
-    public String index(HttpServletRequest request){
+    public String index(HttpServletRequest request) {
 
 
         Cookie[] cookies = request.getCookies();
-        //遍历cookie，找到名为token的cookie
-        for (Cookie cookie:cookies) {
-            if (cookie.getName().equals("token")){
-                String token = cookie.getValue();
-                //去数据库查询，如果有则是登录过的
-                User user = userMapper.findByToken(token);
-                if (user!=null){
-                    request.getSession().setAttribute("user",user);
+        if (cookies != null && cookies.length != 0) {
+            //遍历cookie，找到名为token的cookie
+            for (Cookie cookie : cookies) {
+                if (cookie.getName().equals("token")) {
+                    String token = cookie.getValue();
+                    //去数据库查询，如果有则是登录过的
+                    User user = userMapper.findByToken(token);
+                    if (user != null) {
+                        request.getSession().setAttribute("user", user);
+                    }
+                    break;
                 }
-            break;
             }
         }
 

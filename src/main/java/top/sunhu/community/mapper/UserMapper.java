@@ -14,8 +14,8 @@ import top.sunhu.community.pojo.User;
 @Mapper
 public interface UserMapper {
 
-    @Insert("INSERT into USER (ACCOUNT_ID, NAME, TOKEN, GMT_CREATE, GMT_MODIFIED) " +
-            "VALUES (#{accountId} ,#{name} ,#{token} ,#{gmtCreate} ,#{gmtModified} )")
+    @Insert("INSERT into USER (ACCOUNT_ID, NAME, TOKEN, GMT_CREATE, GMT_MODIFIED,AVATAR_URL) " +
+            "VALUES (#{accountId} ,#{name} ,#{token} ,#{gmtCreate} ,#{gmtModified} ,#{avatar_url} )")
     void insert(User user);
 
     @Select("select * from USER where TOKEN=#{token} ")

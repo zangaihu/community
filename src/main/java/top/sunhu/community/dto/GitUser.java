@@ -13,5 +13,6 @@ public class GitUser {
     private Long id;
     private String name;
     private String bio;
+    private String avatar_url;
 
 }
